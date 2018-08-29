@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+    <code id="currentTime">--</code>
+</body>
+<script type="text/javascript">
+    var ws = new WebSocket("ws://localhost:8080/ws/message");
+
+    /**
+     * 建立连接
+     * @param ev
+     */
+    ws.onopen = function (ev) {
+        console.log("成功建立连接");
+    };
+
+    /**
+     * 收到服务端发送来的消息
+     * @param ev
+     */
+    ws.onmessage = function (ev) {
+        console.log("接受到消息：" + ev.data);
+        document.getElementById("currentTime").innerText = ev.data;
+    };
+
+    /**
+     * 连接断开
+     * @param ev
+     */
+    ws.onclose = function (ev) {
+        console.log("连接已断开");
+    };
+
+    /**
+     * 浏览器窗口关闭时，关闭当前连接
+     * @param ev
+     */
+    window.onbeforeunload = function (ev) {
+        ws.close();
+    }
+</script>
+</html>
